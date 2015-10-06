@@ -1,0 +1,21 @@
+{
+  "name": "gc-linkedin",
+  "version": "1.0.0",
+  "description": "linkedin visualisation on graph commons",
+  "main": "app.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "Ahmet Kizilay",
+  "license": "MIT",
+  "dependencies": {
+    "body-parser": "^1.14.1",
+    "express": "^4.13.3",
+    "express-session": "^1.11.3",
+    "jade": "^1.11.0",
+    "morgan": "^1.6.1",
+    "passport": "^0.3.0",
+    "passport-linkedin-oauth2": "^1.2.1",
+    "promise": "^7.0.4"
+  }
+}

@@ -1,0 +1,12 @@
+doctype html
+html(lang="en")
+  head
+    title="Some Title"
+  body
+    h1 Welcome page
+    if typeof user !== "undefined"
+      p Welcome user
+    else
+      a(href="auth/login") signin
+
+
