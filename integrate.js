@@ -31,7 +31,6 @@ var getUserInfoFromLinkedIn = function (id, accessToken) {
     req.end();
 
     req.on("error", function() {
-      console.log("some error maybe");
       reject();
     });
   });
@@ -116,15 +115,20 @@ var sendToGraphCommons = function(userInfo) {
     req.end();
 
     req.on("error", function() {
-      console.log("error here");
       reject();
     });
   });
 };
 
+var debugPrint = function (userInfo) {
+  return new Promise(function (resolve, reject) {
+    resolve();
+  });
+};
+
 var scrapeUserInfo = function (id, accessToken) {
-  getUserInfoFromLinkedIn(id, accessToken).then(sendToGraphCommons).then(function() {
-    console.log("this should be ok now");
+  return new Promise(function (resolve, reject) {
+    getUserInfoFromLinkedIn(id, accessToken).then(resolve);
   });
 };
 

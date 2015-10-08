@@ -10,6 +10,7 @@ var passport = require("passport");
 var LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
 
 var saveProfile = require("./integrate.js");
+var db = require("./db.js");
 
 var LINKEDIN_API_KEY = process.env.LINKEDIN_API_KEY;
 var LINKEDIN_SECRET_KEY = process.env.LINKEDIN_SECRET_KEY;
@@ -37,7 +38,21 @@ passport.use(new LinkedInStrategy({
 function(req, accessToken, refreshToken, profile, done) {
   req.session.accessToken = accessToken;
   process.nextTick(function() {
-    return done(null, profile);
+    console.log("before initial get")
+    db.get(profile.id).then(function (obj) {
+      console.log("after get");
+      var userObj = {
+        id: profile.id,
+        name: profile.displayName
+      };
+
+      if (obj) {
+        userObj.saved = true;
+      }
+
+      done(null, userObj);
+
+    });
   });
 }));
 
@@ -58,11 +73,21 @@ app.use(passport.session());
 
 
 app.get("/", function (req, res) {
-  res.render("index", { user: req.user });
+  if (req.user) {
+    res.render("index", { user: req.user });
+  }
+  else {
+    res.redirect("/login");
+  }
+
 });
 
 app.get("/map", ensureAuthenticated, function (req, res) {
   res.render("map", {});
+});
+
+app.get("/login", function (req, res) {
+  res.render("login");
 });
 
 app.get("/auth/login", passport.authenticate("linkedin", { state: "temp_state" }), function (req, res) {
@@ -71,7 +96,16 @@ app.get("/auth/login", passport.authenticate("linkedin", { state: "temp_state" }
 
 app.get("/auth/callback",
   passport.authenticate("linkedin", { failureRedirect: "/"}), function (req, res) {
-    saveProfile(req.user.id, req.session.accessToken);
+    console.log(req.user);
+    if (!req.user.saved) {
+
+      saveProfile(req.user.id, req.session.accessToken).then(function (memberData) {
+        return db.put(req.user.id);
+      }).then(function() {
+        console.log("this should be saved now");
+      });
+    }
+    //saveProfile(req.user.id, req.session.accessToken):;
     res.render("map");
   }
 );
@@ -82,6 +116,3 @@ var server = app.listen(process.env.PORT || 3000, function() {
 
   console.log("listening at http://%s:%s", host, port);
 });
-
-
-
