@@ -15,10 +15,12 @@ db.serialize(function () {
 
 process.on('exit', function() {
   db.close();
+  process.exit();
 });
 
 process.on('SIGINT', function() {
   db.close();
+  process.exit();
 });
 
 function putItem (id) {

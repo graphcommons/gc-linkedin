@@ -128,7 +128,9 @@ var debugPrint = function (userInfo) {
 
 var scrapeUserInfo = function (id, accessToken) {
   return new Promise(function (resolve, reject) {
-    getUserInfoFromLinkedIn(id, accessToken).then(resolve);
+    getUserInfoFromLinkedIn(id, accessToken)
+      .then(sendToGraphCommons)
+      .then(resolve);
   });
 };
 
