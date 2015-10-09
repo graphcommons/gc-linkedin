@@ -2,6 +2,11 @@ doctype html
 html(lang="en")
   head
     title="Login"
+    link(href='/css/main.css', rel='stylesheet')
   body
-    h1 Sign in with LinkedIn
-      a(href="auth/login") signin
+    section.cover
+      div.login
+        span Sign in with LinkedIn to add your profile to the map
+        br
+        a.signin(href="auth/login")
+          img(src="img/signin.png")
