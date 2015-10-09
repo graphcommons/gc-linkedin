@@ -1,5 +1,11 @@
 @import "normalize";
 
+@import url(http://fonts.googleapis.com/css?family=Ubuntu);
+
+body {
+   font-family: 'Ubuntu', sans-serif;
+}
+
 body.embed {
   overflow: hidden;
 }
@@ -25,4 +31,18 @@ div.login {
     padding: 10px;
     text-align: center;
     line-height: 2.25rem;
+}
+
+div.wait {
+  width: 400px;
+  min-width: 400px;
+  transform: translate(-50%, -50%);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  box-sizing: border-box;
+  padding: 10px;
+  text-align: center;
+  line-height: 2.25rem;
+  border: solid 2px black;
 }

@@ -2,8 +2,11 @@ doctype html
 html(lang="en")
   head
     title="Processing"
+    link(href='/css/main.css', rel='stylesheet')
   body
-    h1 Please wait now
+    section.cover
+      div.wait
+        span Please wait...
     script(src="https://cdn.socket.io/socket.io-1.3.7.js")
     script(type="text/javascript").
       var socket = io();

@@ -27,11 +27,9 @@ function putItem (id) {
       console.log("about to insert");
       db.run("INSERT INTO members VALUES(?, ?)", [ id, Date.now() ], function (err) {
         if (err) {
-          console.log("failed to insert");
           reject();
         }
         else {
-          console.log("managed to insert");
           resolve();
         }
       });
@@ -47,8 +45,6 @@ function getItem (id) {
           reject();
         }
         else {
-          console.log("get logging");
-          console.log(JSON.stringify(row, null, 2));
           resolve(row !== undefined);
         }
       });

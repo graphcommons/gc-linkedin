@@ -21,7 +21,7 @@ var LINKEDIN_SECRET_KEY = process.env.LINKEDIN_SECRET_KEY;
 
 var ensureAuthenticated = function (req, res, next) {
   if (req.isAuthenticated()) { return next(); }
-  res.redirect("/");
+  res.redirect("/login");
 };
 
 passport.serializeUser(function (user, done) {
@@ -88,34 +88,35 @@ io.on('connection', function(socket){
   clients[socket.request.sessionID] = socket.id;
 
   socket.on("start-save", function() {
-    saveProfile(socket.request.session.passport.user.id, socket.request.session.accessToken).then(function (memberData) {
-        return db.put(socket.request.session.passport.user.id);
+    var passport = socket.request.session.passport;
+    if (!passport || !passport.user) {
+      socket.emit("login-redirect");
+      return;
+    }
+
+    if (!passport.user.saved) {
+      saveProfile(passport.user.id, socket.request.session.accessToken).then(function (memberData) {
+        return db.put(passport.user.id);
       }).then(function() {
         socket.emit("login-completed");
       });
+    }
+    else {
+      socket.emit("login-completed");
+    }
   });
 
 });
 
-app.get("/", function (req, res) {
-  if (req.user) {
-    res.render("index", { user: req.user });
-  }
-  else {
-    res.redirect("/login");
-  }
-
-});
-
-app.get("/map", ensureAuthenticated, function (req, res) {
-  res.render("map", {});
+app.get("/", ensureAuthenticated, function (req, res) {
+  res.render("index", { user: req.user });
 });
 
 app.get("/login", function (req, res) {
   res.render("login");
 });
 
-app.get("/process", function (req, res) {
+app.get("/process", ensureAuthenticated, function (req, res) {
   res.render("process");
 });
 
@@ -125,24 +126,6 @@ app.get("/auth/login", passport.authenticate("linkedin", { state: "temp_state" }
 
 app.get("/auth/callback",
   passport.authenticate("linkedin", { failureRedirect: "/"}), function (req, res) {
-    // if (!req.user.saved) {
-    //
-    //   saveProfile(req.user.id, req.session.accessToken).then(function (memberData) {
-    //     return db.put(req.user.id);
-    //   }).then(function() {
-    //     console.log("this should be saved now");
-    //     console.log("session id is", req.sessionID);
-    //     console.log("the socket id is ", clients[req.sessionID]);
-    //     io.sockets.socket(clients[req.sessionID]).emit("login-completed");
-    //   });
-    // }
-    // else {
-    //   console.log("session id is", req.sessionID);
-    //   console.log("the socket id is ", clients[req.sessionID]);
-    //   io.sockets.socket(clients[req.sessionID]).emit("login-completed");
-    // }
-    //saveProfile(req.user.id, req.session.accessToken):;
-    //res.render("map");
     if (req.user) {
       res.redirect("/process");
     }
