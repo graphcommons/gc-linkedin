@@ -2,7 +2,8 @@
 
 var Promise = require("promise");
 var fs = require("fs");
-var file = "db/records.db";
+var path = require("path");
+var file = path.join(__dirname, "db/records.db");
 var exists = fs.existsSync(file);
 var sqlite3 = require("sqlite3").verbose();
 var db = new sqlite3.Database(file);
