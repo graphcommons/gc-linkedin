@@ -1,19 +1,19 @@
-"use strict";
+'use strict';
 
-var path = require("path");
-var express = require("express");
-var session = require("express-session");
-var logger = require("morgan");
-var bodyParser = require("body-parser");
+var path = require('path');
+var express = require('express');
+var session = require('express-session');
+var logger = require('morgan');
+var bodyParser = require('body-parser');
 
-var http = require("http");
-var socketIO = require("socket.io");
+var http = require('http');
+var socketIO = require('socket.io');
 
-var passport = require("passport");
-var LinkedInStrategy = require("passport-linkedin-oauth2").Strategy;
+var passport = require('passport');
+var LinkedInStrategy = require('passport-linkedin-oauth2').Strategy;
 
-var saveProfile = require("./integrate.js");
-var db = require("./db.js");
+var saveProfile = require('./integrate.js');
+var db = require('./db-postgres.js');
 
 
 var LINKEDIN_API_KEY = process.env.LINKEDIN_API_KEY;
@@ -109,7 +109,7 @@ io.on('connection', function(socket){
 });
 
 app.get("/", ensureAuthenticated, function (req, res) {
-  res.render("index", { user: req.user });
+  res.render("index", { user: req.user, graph: process.env.GC_GRAPH_ID });
 });
 
 app.get("/login", function (req, res) {
