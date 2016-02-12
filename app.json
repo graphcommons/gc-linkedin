@@ -25,8 +25,8 @@
       "value": "",
       "required": true
     },
-    "HEROKU_APP_URL": {
-      "description": "the URL for this app, necessary for authentication",
+    "APP_URL": {
+      "description": "Full Heroku URL for this app. Use the same value you entered above as App Name ending with `herokuapp.com`",
       "value": "",
       "required": true
     }
