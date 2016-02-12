@@ -10,7 +10,7 @@
       "value": "",
       "required": true
     },
-    "LINKEDIN_API_SECRET": {
+    "LINKEDIN_SECRET_KEY": {
       "description": "API Secret for LinkedIn",
       "value": "",
       "required": true
