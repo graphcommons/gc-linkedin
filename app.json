@@ -1,0 +1,34 @@
+{
+  "name": "gc-linkedin",
+  "description": "linkedin visualisation on graph commons",
+  "repository": "https://github.com/artsince/gc-linkedin",
+  "keywords": ["node", "linkedin", "graph commons", "postgres"],
+  "addons": ["heroku-postgresql:hobby-dev"],
+  "env": {
+    "LINKEDIN_API_KEY": {
+      "description": "API Key for LinkedIn",
+      "value": "",
+      "required": true
+    },
+    "LINKEDIN_API_SECRET": {
+      "description": "API Secret for LinkedIn",
+      "value": "",
+      "required": true
+    },
+    "GC_API_KEY": {
+      "description": "Graph Commons API key",
+      "value": "",
+      "required": true
+    },
+    "GC_GRAPH_ID": {
+      "description": "Existing public graph id with write access",
+      "value": "",
+      "required": true
+    },
+    "HEROKU_APP_URL": {
+      "description": "the URL for this app, necessary for authentication",
+      "value": "",
+      "required": true
+    }
+  }
+}

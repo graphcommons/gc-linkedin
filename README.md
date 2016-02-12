@@ -24,3 +24,6 @@ GC_GRAPH_ID=<graph-id> \
 GC_API_KEY=<graphcommons-api-key> \
 node app.js
 ```
+
+#### Quick Deploy [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/artsince/gc-linkedin)
+This will deploy this app on [Heroku](https://heroku.com) to demo it right away.
