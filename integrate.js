@@ -1,36 +1,36 @@
-"use strict";
+'use strict';
 
-var https = require("https");
-var Promise = require("promise");
+var https = require('https');
+var Promise = require('promise');
 
 var getUserInfoFromLinkedIn = function (id, accessToken) {
   return new Promise(function(resolve, reject) {
     var options = {
-      host: "api.linkedin.com",
+      host: 'api.linkedin.com',
       port: 443,
-      path: "/v1/people/~:(id,num-connections,picture-url,positions,location,public-profile-url,industry,first-name,last-name,formatted-name,headline,specialties,summary)?format=json",
-      method: "GET",
+      path: '/v1/people/~:(id,num-connections,picture-url,positions,location,public-profile-url,industry,first-name,last-name,formatted-name,headline,specialties,summary)?format=json',
+      method: 'GET',
       headers: {
-        "Authorization": "Bearer " + accessToken
+        'Authorization': 'Bearer ' + accessToken
       }
     };
 
     var req = https.request(options, function (res) {
-      var total_response = "";
-      res.setEncoding("utf8");
+      var total_response = ';
+      res.setEncoding('utf8');
 
-      res.on("data", function (chunk) {
+      res.on('data', function (chunk) {
         total_response += chunk;
       });
 
-      res.on("end", function() {
+      res.on('end', function() {
         resolve(JSON.parse(total_response));
       });
     });
 
     req.end();
 
-    req.on("error", function() {
+    req.on('error', function() {
       reject();
     });
   });
@@ -39,39 +39,39 @@ var getUserInfoFromLinkedIn = function (id, accessToken) {
 var prepareGraphSignals = function (userInfo) {
   var actions = [];
   actions.push({
-    "action": "node_create",
-    "type": "Member",
-    "name": userInfo.formattedName,
-    "reference": userInfo.publicProfileUrl,
-    "image": userInfo.pictureUrl,
-    "description": userInfo.summary,
-    "properties": {
-      "linkedin_id": userInfo.id,
-      "headline": userInfo.headline,
-      "connections": userInfo.numConnections
+    'action': 'node_create',
+    'type': 'Member',
+    'name': userInfo.formattedName,
+    'reference': userInfo.publicProfileUrl,
+    'image': userInfo.pictureUrl,
+    'description': userInfo.summary,
+    'properties': {
+      'linkedin_id': userInfo.id,
+      'headline': userInfo.headline,
+      'connections': userInfo.numConnections
     }
   });
 
   actions.push({
-    "action": "edge_create",
-    "from_type": "Member",
-    "from_name": userInfo.formattedName,
-    "to_type": "Industry",
-    "to_name": userInfo.industry,
-    "name": "WORKED_IN"
+    'action': 'edge_create',
+    'from_type': 'Member',
+    'from_name': userInfo.formattedName,
+    'to_type': 'Industry',
+    'to_name': userInfo.industry,
+    'name': 'WORKED_IN'
   });
 
   userInfo.positions.values.forEach(function (position) {
     actions.push({
-      "action": "edge_create",
-      "from_type": "Member",
-      "from_name": userInfo.formattedName,
-      "to_type": "Company",
-      "to_name": position.company.name,
-      "name": "HELD_POSITION",
-      "properties": {
-        "is_current": position.isCurrent,
-        "start_date": position.startDate.year + " - " + position.startDate.month
+      'action': 'edge_create',
+      'from_type': 'Member',
+      'from_name': userInfo.formattedName,
+      'to_type': 'Company',
+      'to_name': position.company.name,
+      'name': 'HELD_POSITION',
+      'properties': {
+        'is_current': position.isCurrent,
+        'start_date': position.startDate.year + ' - ' + position.startDate.month
       }
     });
   });
@@ -87,26 +87,26 @@ var sendToGraphCommons = function(userInfo) {
     var signals = prepareGraphSignals(userInfo);
 
     var options = {
-      host: "graphcommons.com",
+      host: 'graphcommons.com',
       port: 443,
-      path: "/api/v1/graphs/" + process.env.GC_GRAPH_ID + "/add",
-      method: "PUT",
+      path: '/api/v1/graphs/' + process.env.GC_GRAPH_ID + '/add',
+      method: 'PUT',
       headers: {
-        "Authentication": process.env.GC_API_KEY,
-        "Content-Type": "application/json"
+        'Authentication': process.env.GC_API_KEY,
+        'Content-Type': 'application/json'
       }
     };
 
     var req = https.request(options, function (res) {
-      var total_response = "";
+      var total_response = ';
 
-      res.setEncoding("utf8");
+      res.setEncoding('utf8');
 
-      res.on("data", function(chunk) {
+      res.on('data', function(chunk) {
         total_response += chunk;
       });
 
-      res.on("end", function() {
+      res.on('end', function() {
         resolve(JSON.parse(total_response));
       });
     });
@@ -114,15 +114,9 @@ var sendToGraphCommons = function(userInfo) {
     req.write(signals);
     req.end();
 
-    req.on("error", function() {
+    req.on('error', function() {
       reject();
     });
-  });
-};
-
-var debugPrint = function (userInfo) {
-  return new Promise(function (resolve, reject) {
-    resolve();
   });
 };
 

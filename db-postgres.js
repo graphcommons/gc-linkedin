@@ -46,7 +46,7 @@ function getItem (id) {
       }
 
       var results = [];
-      var query = client.query("SELECT * FROM members WHERE id=($1)", [id]);
+      var query = client.query('SELECT * FROM members WHERE id=($1)', [id]);
 
       query.on('row', function (row) {
         results.push(row);
