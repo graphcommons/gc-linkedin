@@ -41,5 +41,5 @@ node app.js
 `APP_URL` is necessary for the authentication callback from LinkedIn. The authentication callback URL should be
 set as `http://localhost:3000/auth/callback`
 
-#### Quick Deploy [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/artsince/gc-linkedin)
+#### Quick Deploy [![Deploy](https://www.herokucdn.com/deploy/button.svg)](https://heroku.com/deploy?template=https://github.com/ahmetkizilay/gc-linkedin)
 This will deploy this app on [Heroku](https://heroku.com) to demo it right away. By default, a web dyno will be started with free heroku postgres database add on. Required environment variables will be listed on the installation page for you to fill out.
