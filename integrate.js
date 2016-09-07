@@ -16,7 +16,7 @@ var getUserInfoFromLinkedIn = function (id, accessToken) {
     };
 
     var req = https.request(options, function (res) {
-      var total_response = ';
+      var total_response = '';
       res.setEncoding('utf8');
 
       res.on('data', function (chunk) {
@@ -98,7 +98,7 @@ var sendToGraphCommons = function(userInfo) {
     };
 
     var req = https.request(options, function (res) {
-      var total_response = ';
+      var total_response = '';
 
       res.setEncoding('utf8');
 
